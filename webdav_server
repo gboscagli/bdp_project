@@ -1,11 +1,12 @@
-# On The Server
+#Run these commands ON THE SERVER
 #enable the epel repository as done for condor, you should see have this file:
 cat /etc/yum.repos.d/epel.repo
 
 ####
 
-#Install Apache using YUM:
+#Install Apache:
 yum install httpd
+yum install cadaver
 
 #Disable Apache's default welcome page:
 sed -i 's/^/#&/g' /etc/httpd/conf.d/welcome.conf
@@ -18,7 +19,7 @@ systemctl start httpd.service
 
 httpd -M | grep dav
 
-#You should see as output something like
+#after running previous command, you should see as output something like
 #   dav_module (shared)
 #   dav_fs_module (shared)
 #   dav_lock_module (shared)
@@ -27,8 +28,7 @@ mkdir /var/www/html/webdav
 chown -R apache:apache /var/www/html
 chmod -R 755 /var/www/html
 
-#you need to create a user account, say it is "user001", to access the WebDAV server, and then input your desired password. 
-#Later, you will use this user account to log into your WebDAV server.
+#you need to create a user account. Later on, you will use it to log into your WebDAV server.
 
 htpasswd -c /etc/httpd/.htpasswd user001
 chown root:apache /etc/httpd/.htpasswd
@@ -36,10 +36,11 @@ chmod 640 /etc/httpd/.htpasswd
 
 #Create a virtual host for WebDAV
 
-vim /etc/httpd/conf.d/webdav.conf
+nano /etc/httpd/conf.d/webdav.conf
 
 #Populate it with the following content
 
+#####################################################
 DavLockDB /var/www/html/DavLock
 <VirtualHost *:80>
     ServerAdmin webmaster@localhost
@@ -59,22 +60,21 @@ DavLockDB /var/www/html/DavLock
 
 #disable selinux if enabled
 setenforce 0
-# to have this permanently disabled: https://linuxize.com/post/how-to-disable-selinux-on-centos-7/
-
 systemctl restart httpd.service
 
-
 #############################################################
 #############################################################
 
-# On the Client
+#Run the following commands ON THE CLIENT
 
 yum install cadaver
 cadaver http://<your-server-ip>/webdav/
 
-#To upload a local file "/home/user/abc.txt" to the WebDAV server:
+#You will be asked the credentials you previously created
 
-dav:/webdav/> put /home/user/abc.txt
+#To upload a local file to the WebDAV server:
+
+dav:/webdav/> put /home/ec2-user/prova.txt
 
 #To create a directory "dir1" on the WebDAV server:
 
