@@ -1,0 +1,36 @@
+#INSTALL DEPENDENCIES
+yum install wget
+wget https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+yum localinstall epel-release-latest-7.noarch.rpm
+yum clean all
+ 
+#INSTALL CONDOR REPOs and PACKAGES
+wget http://research.cs.wisc.edu/htcondor/yum/repo.d/htcondor-stable-rhel7.repo
+cp htcondor-stable-rhel7.repo /etc/yum.repos.d/
+yum install condor-all
+ 
+#CONDOR BASIC CONFIGURATION
+
+#GUIDELINES FOR THE CONDOR_CONFIG FILE
+nano /etc/condor/condor_config
+# ADD the following lines to your condor_config file
+# CHANGE THE FOLLOWING IP TO YOUR MASTER IP
+CONDOR_HOST = <master private IP address>
+ 
+# on the master
+DAEMON_LIST = COLLECTOR, MASTER, NEGOTIATOR, STARTD, SCHEDD
+ 
+# on the nodes
+DAEMON_LIST = MASTER, STARTD
+
+# on both
+HOSTALLOW_READ = *
+HOSTALLOW_WRITE = *
+HOSTALLOW_ADMINISTRATOR = *
+
+#Once edited the condor_config file you can proceed with the following commands
+systemctl status condor
+systemctl start condor
+systemctl enable condor
+systemctl status condor
+ps -aux | grep condor
