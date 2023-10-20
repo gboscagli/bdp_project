@@ -1,6 +1,6 @@
 ########### The program that will be executed #######
 
-Executable = ../../../condor/hg/align.py
+Executable = ../../../condor/hg/align.py #running the command in a patient folder, whereas align.py is in a different directory
 
 ############ Input Sandbox  #########################
 
