@@ -1,0 +1,41 @@
+########### The program that will be executed #######
+
+Executable = ../../../condor/hg/align.py
+
+############ Input Sandbox  #########################
+
+n = $(Process)+1
+Input      = read_$INT(n).fa  
+#Can contain standard input
+
+transfer_input_files = ../../../condor/hg/bwa, read_$INT(n).fa
+
+## Arguments that will be passed to the executable ##
+
+Arguments  = read_$INT(n).fa
+
+###### Output Sandbox ###############################
+
+Log        = outputs/read_$INT(n).log    
+# will contain condor log
+
+Output     = outputs/read_$INT(n).out
+# will contain the standard output
+
+Error      = outputs/read_$INT(n).error  
+# will contain the standard error
+
+transfer_output_files = outputs/read_$INT(n).sam.gz, outputs/read_$INT(n).sai, outputs/read_$INT(n)_md5.txt
+
+############## condor control variables #############
+
+should_transfer_files = YES
+when_to_transfer_output = ON_EXIT
+
+Universe   = vanilla
+
+#requirements = (Machine == "phd-wn-1")
+
+#####################################################
+
+Queue 200
