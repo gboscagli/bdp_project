@@ -34,8 +34,6 @@ when_to_transfer_output = ON_EXIT
 
 Universe   = vanilla
 
-#requirements = (Machine == "phd-wn-1")
-
 #####################################################
 
-Queue 200
+Queue 100
