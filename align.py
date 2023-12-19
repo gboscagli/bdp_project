@@ -10,13 +10,13 @@ from timeit import default_timer as timer
 
 initial_time = timer()
 dbpath = "/home/BDP1_2022/hg19/"
-dbname = "hg19bwaidx"
+dbname = "/home/BDP1_2022/hg19/hg19bwaidx"
 
 queryname = sys.argv[1]
 
 out_name = queryname[:-3]
 
-md5file = out_name+"_md5.txt"
+md5file = out_name+".md5"
 
 
 command = "./bwa aln -t 1 " + dbpath + dbname + " " + queryname + " > " + out_name + ".sai"
